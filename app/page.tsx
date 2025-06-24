@@ -1,3 +1,5 @@
+"use client"
+import { useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -6,6 +8,15 @@ import Image from "next/image"
 import Link from "next/link"
 
 export default function LandingPage() {
+const fileInputRef = useRef<HTMLInputElement>(null)
+
+const handleVideoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const file = event.target.files?.[0]
+  if (file) {
+    console.log("Uploaded video:", file)
+    // TODO: Upload to backend or show preview
+  }
+}
   return (
     <div className="flex flex-col min-h-screen">
       {/* Header */}
@@ -50,7 +61,7 @@ export default function LandingPage() {
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                  <Button size="lg" className="bg-orange-600 hover:bg-orange-700">
+                  <Button size="lg" className="bg-orange-600 hover:bg-orange-700" onClick={() => fileInputRef.current?.click()}>
                     <Upload className="mr-2 h-4 w-4" />
                     Upload Your First Video
                   </Button>
@@ -63,6 +74,13 @@ export default function LandingPage() {
                     Watch Demo
                   </Button>
                 </div>
+                <input
+                  type="file"
+                  accept="video/*"
+                  ref={fileInputRef}
+                  onChange={handleVideoUpload}
+                  style={{ display: "none" }}
+                />
                 <div className="flex items-center gap-4 text-sm text-gray-600">
                   <div className="flex items-center gap-1">
                     <CheckCircle className="h-4 w-4 text-green-600" />
@@ -252,60 +270,6 @@ export default function LandingPage() {
                 </div>
                 <BarChart3 className="h-12 w-12 text-orange-600" />
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Social Proof Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                  Trusted by Fitness Enthusiasts Worldwide
-                </h2>
-                <p className="max-w-[900px] text-gray-600 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Join thousands of users who have improved their workout form and prevented injuries
-                </p>
-              </div>
-            </div>
-            <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-3 lg:gap-8">
-              <div className="flex flex-col items-center space-y-2 text-center">
-                <div className="text-4xl font-bold text-orange-600">10K+</div>
-                <div className="text-sm text-gray-600">Videos Analyzed</div>
-              </div>
-              <div className="flex flex-col items-center space-y-2 text-center">
-                <div className="text-4xl font-bold text-orange-600">95%</div>
-                <div className="text-sm text-gray-600">Accuracy Rate</div>
-              </div>
-              <div className="flex flex-col items-center space-y-2 text-center">
-                <div className="text-4xl font-bold text-orange-600">4.9★</div>
-                <div className="text-sm text-gray-600">User Rating</div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-r from-orange-600 to-red-600">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center text-white">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Ready to Perfect Your Form?</h2>
-                <p className="max-w-[600px] text-orange-100 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Start your free trial today and experience the power of AI-driven workout analysis
-                </p>
-              </div>
-              <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                <Button size="lg" className="bg-white text-orange-600 hover:bg-gray-100">
-                  <Upload className="mr-2 h-4 w-4" />
-                  Start Free Trial
-                </Button>
-                <Button variant="outline" size="lg" className="border-white text-white hover:bg-white/10">
-                  Learn More
-                </Button>
-              </div>
-              <p className="text-sm text-orange-200">No credit card required • 7-day free trial • Cancel anytime</p>
             </div>
           </div>
         </section>
