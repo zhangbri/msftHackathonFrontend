@@ -32,8 +32,8 @@ export default function LandingPage() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-br from-orange-50 to-red-50">
-          <div className="container px-4 md:px-6">
+        <section className="flex  w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-br from-orange-50 to-red-50">
+          <div className="justify-center items-center container px-4 md:px-6 m-auto">
             <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
               <div className="flex flex-col justify-center space-y-4">
                 <div className="space-y-2">
@@ -104,8 +104,8 @@ export default function LandingPage() {
         </section>
 
         {/* Features Section */}
-        <section id="features" className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
+        <section id="features" className="flex w-full py-12 md:py-24 lg:py-32">
+          <div className="justify-center items-center container m-auto px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <Badge className="bg-orange-100 text-orange-800 hover:bg-orange-200">Features</Badge>
@@ -113,7 +113,7 @@ export default function LandingPage() {
                   Advanced AI Analysis for Every Exercise
                 </h2>
                 <p className="max-w-[900px] text-gray-600 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Our computer vision technology analyzes your movements in real-time, providing detailed feedback on
+                  Our computer vision technology analyzes your movements, providing detailed feedback on
                   form, technique, and areas for improvement.
                 </p>
               </div>
@@ -131,7 +131,7 @@ export default function LandingPage() {
                   <ul className="space-y-2 text-sm text-gray-600">
                     <li className="flex items-center gap-2">
                       <CheckCircle className="h-4 w-4 text-green-600" />
-                      Real-time pose detection
+                      Pose detection
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle className="h-4 w-4 text-green-600" />
@@ -201,8 +201,8 @@ export default function LandingPage() {
         </section>
 
         {/* How It Works Section */}
-        <section id="how-it-works" className="w-full py-12 md:py-24 lg:py-32 bg-gray-50">
-          <div className="container px-4 md:px-6">
+        <section id="how-it-works" className="w-full py-12 md:py-24 lg:py-32 bg-gray-50 flex">
+          <div className="justify-center items-center container px-4 md:px-6 m-auto">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <Badge className="bg-orange-100 text-orange-800 hover:bg-orange-200">How It Works</Badge>
@@ -233,8 +233,8 @@ export default function LandingPage() {
                 <div className="space-y-2">
                   <h3 className="text-xl font-bold">AI Analysis</h3>
                   <p className="text-gray-600">
-                    Our advanced computer vision algorithms analyze your movements, posture, and form in real-time with
-                    95%+ accuracy.
+                    Our advanced computer vision algorithms analyze your movements, posture, and form with
+                    SOME HIGH PERCENTAGE+ accuracy.
                   </p>
                 </div>
                 <Brain className="h-12 w-12 text-orange-600" />
@@ -256,59 +256,6 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Social Proof Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                  Trusted by Fitness Enthusiasts Worldwide
-                </h2>
-                <p className="max-w-[900px] text-gray-600 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Join thousands of users who have improved their workout form and prevented injuries
-                </p>
-              </div>
-            </div>
-            <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-3 lg:gap-8">
-              <div className="flex flex-col items-center space-y-2 text-center">
-                <div className="text-4xl font-bold text-orange-600">10K+</div>
-                <div className="text-sm text-gray-600">Videos Analyzed</div>
-              </div>
-              <div className="flex flex-col items-center space-y-2 text-center">
-                <div className="text-4xl font-bold text-orange-600">95%</div>
-                <div className="text-sm text-gray-600">Accuracy Rate</div>
-              </div>
-              <div className="flex flex-col items-center space-y-2 text-center">
-                <div className="text-4xl font-bold text-orange-600">4.9★</div>
-                <div className="text-sm text-gray-600">User Rating</div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-r from-orange-600 to-red-600">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center text-white">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Ready to Perfect Your Form?</h2>
-                <p className="max-w-[600px] text-orange-100 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Start your free trial today and experience the power of AI-driven workout analysis
-                </p>
-              </div>
-              <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                <Button size="lg" className="bg-white text-orange-600 hover:bg-gray-100">
-                  <Upload className="mr-2 h-4 w-4" />
-                  Start Free Trial
-                </Button>
-                <Button variant="outline" size="lg" className="border-white text-white hover:bg-white/10">
-                  Learn More
-                </Button>
-              </div>
-              <p className="text-sm text-orange-200">No credit card required • 7-day free trial • Cancel anytime</p>
-            </div>
-          </div>
-        </section>
       </main>
 
       {/* Footer */}
