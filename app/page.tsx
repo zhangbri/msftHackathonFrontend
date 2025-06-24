@@ -113,7 +113,7 @@ export default function LandingPage() {
                   Advanced AI Analysis for Every Exercise
                 </h2>
                 <p className="max-w-[900px] text-gray-600 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Our computer vision technology analyzes your movements in real-time, providing detailed feedback on
+                  Our computer vision technology analyzes your movements, providing detailed feedback on
                   form, technique, and areas for improvement.
                 </p>
               </div>
@@ -131,7 +131,7 @@ export default function LandingPage() {
                   <ul className="space-y-2 text-sm text-gray-600">
                     <li className="flex items-center gap-2">
                       <CheckCircle className="h-4 w-4 text-green-600" />
-                      Real-time pose detection
+                      Pose detection
                     </li>
                     <li className="flex items-center gap-2">
                       <CheckCircle className="h-4 w-4 text-green-600" />
@@ -233,8 +233,8 @@ export default function LandingPage() {
                 <div className="space-y-2">
                   <h3 className="text-xl font-bold">AI Analysis</h3>
                   <p className="text-gray-600">
-                    Our advanced computer vision algorithms analyze your movements, posture, and form in real-time with
-                    95%+ accuracy.
+                    Our advanced computer vision algorithms analyze your movements, posture, and form with
+                    SOME HIGH PERCENTAGE+ accuracy.
                   </p>
                 </div>
                 <Brain className="h-12 w-12 text-orange-600" />
