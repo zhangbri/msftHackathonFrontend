@@ -9,6 +9,8 @@ import Link from "next/link"
 export default function LandingPage() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [videoURL, setVideoURL] = useState<string | null>(null)
+  const [expanded, setExpanded] = useState(false)
+  const [slideImage, setSlideImage] = useState(false)
 
   const handleVideoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -17,6 +19,12 @@ export default function LandingPage() {
       setVideoURL(url)
       console.log("Uploaded video:", file)
     }
+  }
+
+  // Simulate promise resolution for testing
+  const handleTestExpand = () => {
+    setExpanded(true)
+    setTimeout(() => setSlideImage(true), 1000) // Wait for fade-out before sliding image (1s)
   }
   
   return (
@@ -34,83 +42,96 @@ export default function LandingPage() {
         <section className="flex  w-full py-12 md:py-24 lg:py-32 xl:py-48">
           <div className="justify-center items-center container px-4 md:px-6 m-auto">
             <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
-              <div className="flex flex-col justify-center space-y-4">
-                <div className="space-y-2">
-                  <Badge className="w-fit bg-orange-100 text-orange-800 hover:bg-orange-200">
-                    <Zap className="w-3 h-3 mr-1" />
-                    AI-Powered Form Analysis
-                  </Badge>
-                  <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                    Perfect Your Workout Form with <span className="text-orange-600">AI Vision</span>
-                  </h1>
-                  <p className="max-w-[600px] text-gray-600 md:text-xl">
-                    Upload your workout videos and get instant AI-powered analysis of your form. Prevent injuries,
-                    maximize gains, and train like a pro with personalized feedback.
-                  </p>
-                </div>
-                <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                  <Button size="lg" className="bg-orange-600 hover:bg-orange-700" onClick={() => fileInputRef.current?.click()}>
-                    <Upload className="mr-2 h-4 w-4" />
-                    Upload Your First Video
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="bg-white text-gray-900 border-gray-300 hover:bg-gray-50"
-                  >
-                    <Play className="mr-2 h-4 w-4" />
-                    Watch Demo
-                  </Button>
-                </div>
-                <input
-                  type="file"
-                  accept="video/*"
-                  ref={fileInputRef}
-                  onChange={handleVideoUpload}
-                  style={{ display: "none" }}
-                />
-                <div className="flex items-center gap-4 text-sm text-gray-600">
-                  <div className="flex items-center gap-1">
-                    <CheckCircle className="h-4 w-4 text-green-600" />
-                    Free trial
+              <div className="relative w-full min-h-[400px] flex">
+                {/* Text column: fades out, then is removed after slide */}
+                <div className={`flex flex-col justify-center space-y-4 transition-opacity duration-1000 w-[600px] min-w-[600px] max-w-[600px] ${expanded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+                  <div className="space-y-2">
+                    <Badge className="w-fit bg-orange-100 text-orange-800 hover:bg-orange-200">
+                      <Zap className="w-3 h-3 mr-1" />
+                      AI-Powered Form Analysis
+                    </Badge>
+                    <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
+                      Perfect Your Workout Form with <span className="text-orange-600">AI Vision</span>
+                    </h1>
+                    <p className="max-w-[600px] text-gray-600 md:text-xl">
+                      Upload your workout videos and get instant AI-powered analysis of your form. Prevent injuries,
+                      maximize gains, and train like a pro with personalized feedback.
+                    </p>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <CheckCircle className="h-4 w-4 text-green-600" />
-                    No equipment needed
+                  <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                    <Button size="lg" className="bg-orange-600 hover:bg-orange-700" onClick={() => fileInputRef.current?.click()}>
+                      <Upload className="mr-2 h-4 w-4" />
+                      Upload Your First Video
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="lg"
+                      className="bg-white text-gray-900 border-gray-300 hover:bg-gray-50"
+                    >
+                      <Play className="mr-2 h-4 w-4" />
+                      Watch Demo
+                    </Button>
+                    {/* Test Expand Button */}
+                    <Button variant="secondary" size="lg" onClick={handleTestExpand}>
+                      Test Expand
+                    </Button>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <CheckCircle className="h-4 w-4 text-green-600" />
-                    Instant feedback
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center justify-center">
-                <div className="relative aspect-[4/3] w-full max-w-[600px] rounded-xl overflow-hidden shadow-2xl">
-                  {/* Background image always visible */}
-                  <Image
-                    alt="Workout Analysis Dashboard"
-                    src="/favicon/apple-touch-icon.png"
-                    fill
-                    className="object-contain bg-black/10 rounded-xl"
+                  <input
+                    type="file"
+                    accept="video/*"
+                    ref={fileInputRef}
+                    onChange={handleVideoUpload}
+                    style={{ display: "none" }}
                   />
-                  {/* Uploaded video (if any), layered on top */}
-                  {videoURL && (
-                    <video
-                      src={videoURL}
-                      controls
-                      className="absolute inset-0 w-full h-full object-contain z-10 bg-black/30"
+                  <div className="flex items-center gap-4 text-sm text-gray-600">
+                    <div className="flex items-center gap-1">
+                      <CheckCircle className="h-4 w-4 text-green-600" />
+                      Free trial
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <CheckCircle className="h-4 w-4 text-green-600" />
+                      No equipment needed
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <CheckCircle className="h-4 w-4 text-green-600" />
+                      Instant feedback
+                    </div>
+                  </div>
+                </div>
+                {/* Image panel: slides left after text fades out */}
+                <div
+                  className={`relative flex items-center transition-all duration-1000 w-[600px] min-w-[600px] max-w-[600px] 
+                    ${slideImage ? '-translate-x-[600px] ml-0' : 'translate-x-0 ml-16'}
+                  `}
+                  style={{ willChange: 'transform' }}
+                >
+                  <div className="relative aspect-[4/3] w-[600px] min-w-[600px] max-w-[600px] rounded-xl overflow-hidden shadow-2xl transition-all duration-1000">
+                    {/* Background image always visible */}
+                    <Image
+                      alt="Workout Analysis Dashboard"
+                      src="/favicon/apple-touch-icon.png"
+                      fill
+                      className="object-contain bg-black/10 rounded-xl"
                     />
-                  )}
-                  {/* Gradient overlay, always on top */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent z-20" />
+                    {/* Uploaded video (if any), layered on top */}
+                    {videoURL && (
+                      <video
+                        src={videoURL}
+                        controls
+                        className="absolute inset-0 w-full h-full object-contain z-10 bg-black/30"
+                      />
+                    )}
+                    {/* Gradient overlay, always on top */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent z-20" />
 
-                  {/* Bottom status panel */}
-                  <div className="absolute bottom-4 left-4 right-4 z-30">
-                    <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3">
-                      <div className="flex items-center gap-2 text-sm">
-                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                        <span className="font-medium">{videoURL ? "Preview loaded" : "Analyzing form..."}</span>
-                        <span className="text-gray-600">{videoURL ? "User-uploaded video" : "92% accuracy"}</span>
+                    {/* Bottom status panel */}
+                    <div className="absolute bottom-4 left-4 right-4 z-30">
+                      <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3">
+                        <div className="flex items-center gap-2 text-sm">
+                          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                          <span className="font-medium">{videoURL ? "Preview loaded" : "Analyzing form..."}</span>
+                          <span className="text-gray-600">{videoURL ? "User-uploaded video" : "92% accuracy"}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
