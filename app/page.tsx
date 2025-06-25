@@ -1,50 +1,38 @@
 "use client"
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Camera, Brain, TrendingUp, Shield, Upload, BarChart3, CheckCircle, Play, Zap } from "lucide-react"
+import { Camera, Upload, CheckCircle, Play, Zap } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
 export default function LandingPage() {
-const fileInputRef = useRef<HTMLInputElement>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [videoURL, setVideoURL] = useState<string | null>(null)
 
-const handleVideoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-  const file = event.target.files?.[0]
-  if (file) {
-    console.log("Uploaded video:", file)
-    // TODO: Upload to backend or show preview
+  const handleVideoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      const url = URL.createObjectURL(file)
+      setVideoURL(url)
+      console.log("Uploaded video:", file)
+    }
   }
-}
+  
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-orange-50 to-red-50">
       {/* Header */}
-      <header className="px-4 lg:px-6 h-16 flex items-center border-b">
+      <header className="px-4 lg:px-6 -mb-28 h-16 flex items-center border-b">
         <Link className="flex items-center justify-center" href="/">
           <Camera className="h-8 w-8 text-orange-600" />
           <span className="ml-2 text-xl font-bold">FormSight</span>
         </Link>
-        <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#features">
-            Features
-          </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#how-it-works">
-            How It Works
-          </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#pricing">
-            Pricing
-          </Link>
-          <Link className="text-sm font-medium hover:underline underline-offset-4" href="#contact">
-            Contact
-          </Link>
-        </nav>
       </header>
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-br from-orange-50 to-red-50">
-          <div className="container px-4 md:px-6">
+        <section className="flex  w-full py-12 md:py-24 lg:py-32 xl:py-48">
+          <div className="justify-center items-center container px-4 md:px-6 m-auto">
             <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
               <div className="flex flex-col justify-center space-y-4">
                 <div className="space-y-2">
@@ -120,159 +108,6 @@ const handleVideoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
             </div>
           </div>
         </section>
-
-        {/* Features Section */}
-        <section id="features" className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <Badge className="bg-orange-100 text-orange-800 hover:bg-orange-200">Features</Badge>
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                  Advanced AI Analysis for Every Exercise
-                </h2>
-                <p className="max-w-[900px] text-gray-600 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Our computer vision technology analyzes your movements in real-time, providing detailed feedback on
-                  form, technique, and areas for improvement.
-                </p>
-              </div>
-            </div>
-            <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-3 lg:gap-8">
-              <Card className="border-2 hover:border-orange-200 transition-colors">
-                <CardHeader>
-                  <Brain className="h-10 w-10 text-orange-600" />
-                  <CardTitle>AI Form Analysis</CardTitle>
-                  <CardDescription>
-                    Advanced computer vision algorithms analyze your posture, alignment, and movement patterns
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 text-sm text-gray-600">
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-600" />
-                      Real-time pose detection
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-600" />
-                      Joint angle analysis
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-600" />
-                      Movement quality scoring
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <Card className="border-2 hover:border-orange-200 transition-colors">
-                <CardHeader>
-                  <TrendingUp className="h-10 w-10 text-orange-600" />
-                  <CardTitle>Progress Tracking</CardTitle>
-                  <CardDescription>
-                    Monitor your improvement over time with detailed analytics and progress reports
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 text-sm text-gray-600">
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-600" />
-                      Form improvement metrics
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-600" />
-                      Weekly progress reports
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-600" />
-                      Goal setting & tracking
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-
-              <Card className="border-2 hover:border-orange-200 transition-colors">
-                <CardHeader>
-                  <Shield className="h-10 w-10 text-orange-600" />
-                  <CardTitle>Injury Prevention</CardTitle>
-                  <CardDescription>
-                    Get alerts about potentially harmful movements and receive corrective guidance
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 text-sm text-gray-600">
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-600" />
-                      Risk assessment alerts
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-600" />
-                      Corrective exercise suggestions
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4 text-green-600" />
-                      Safety recommendations
-                    </li>
-                  </ul>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </section>
-
-        {/* How It Works Section */}
-        <section id="how-it-works" className="w-full py-12 md:py-24 lg:py-32 bg-gray-50">
-          <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <Badge className="bg-orange-100 text-orange-800 hover:bg-orange-200">How It Works</Badge>
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">Get Perfect Form in 3 Simple Steps</h2>
-                <p className="max-w-[900px] text-gray-600 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Our streamlined process makes it easy to analyze your workouts and improve your form
-                </p>
-              </div>
-            </div>
-            <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-3 lg:gap-12">
-              <div className="flex flex-col items-center space-y-4 text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-orange-600 text-white text-xl font-bold">
-                  1
-                </div>
-                <div className="space-y-2">
-                  <h3 className="text-xl font-bold">Upload Your Video</h3>
-                  <p className="text-gray-600">
-                    Record your workout with any device and upload it to our secure platform. We support all major video
-                    formats.
-                  </p>
-                </div>
-                <Upload className="h-12 w-12 text-orange-600" />
-              </div>
-              <div className="flex flex-col items-center space-y-4 text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-orange-600 text-white text-xl font-bold">
-                  2
-                </div>
-                <div className="space-y-2">
-                  <h3 className="text-xl font-bold">AI Analysis</h3>
-                  <p className="text-gray-600">
-                    Our advanced computer vision algorithms analyze your movements, posture, and form in real-time with
-                    95%+ accuracy.
-                  </p>
-                </div>
-                <Brain className="h-12 w-12 text-orange-600" />
-              </div>
-              <div className="flex flex-col items-center space-y-4 text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-orange-600 text-white text-xl font-bold">
-                  3
-                </div>
-                <div className="space-y-2">
-                  <h3 className="text-xl font-bold">Get Feedback</h3>
-                  <p className="text-gray-600">
-                    Receive detailed analysis, personalized recommendations, and actionable insights to improve your
-                    form and prevent injuries.
-                  </p>
-                </div>
-                <BarChart3 className="h-12 w-12 text-orange-600" />
-              </div>
-            </div>
-          </div>
-        </section>
       </main>
 
       {/* Footer */}
@@ -290,6 +125,7 @@ const handleVideoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
           </Link>
         </nav>
       </footer>
+
     </div>
   )
 }
