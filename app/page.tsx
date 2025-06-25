@@ -1,3 +1,5 @@
+"use client"
+import { useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Camera, Upload, CheckCircle, Play, Zap } from "lucide-react"
@@ -5,6 +7,18 @@ import Image from "next/image"
 import Link from "next/link"
 
 export default function LandingPage() {
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [videoURL, setVideoURL] = useState<string | null>(null)
+
+  const handleVideoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      const url = URL.createObjectURL(file)
+      setVideoURL(url)
+      console.log("Uploaded video:", file)
+    }
+  }
+  
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-orange-50 to-red-50">
       {/* Header */}
@@ -35,7 +49,7 @@ export default function LandingPage() {
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                  <Button size="lg" className="bg-orange-600 hover:bg-orange-700">
+                  <Button size="lg" className="bg-orange-600 hover:bg-orange-700" onClick={() => fileInputRef.current?.click()}>
                     <Upload className="mr-2 h-4 w-4" />
                     Upload Your First Video
                   </Button>
@@ -48,6 +62,13 @@ export default function LandingPage() {
                     Watch Demo
                   </Button>
                 </div>
+                <input
+                  type="file"
+                  accept="video/*"
+                  ref={fileInputRef}
+                  onChange={handleVideoUpload}
+                  style={{ display: "none" }}
+                />
                 <div className="flex items-center gap-4 text-sm text-gray-600">
                   <div className="flex items-center gap-1">
                     <CheckCircle className="h-4 w-4 text-green-600" />
@@ -87,8 +108,6 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
-
-
       </main>
 
       {/* Footer */}
