@@ -2,7 +2,7 @@
 import { useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Camera, Upload, CheckCircle, Play, Zap } from "lucide-react"
+import { Camera, Upload, CheckCircle, Play, Zap, Volume2, VolumeX, Expand } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -13,6 +13,8 @@ export default function LandingPage() {
   const [slideImage, setSlideImage] = useState(false)
   const [showPlayOverlay, setShowPlayOverlay] = useState(true)
   const videoRef = useRef<HTMLVideoElement | null>(null)
+  const [muted, setMuted] = useState(true)
+  const [isHovered, setIsHovered] = useState(false)
 
   const handleVideoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -27,6 +29,12 @@ export default function LandingPage() {
   const handleTestExpand = () => {
     setExpanded(true)
     setTimeout(() => setSlideImage(true), 1000) // Wait for fade-out before sliding image (1s)
+  }
+  
+  const formatTime = (seconds: number): string => {
+    const minutes = Math.floor(seconds / 60)
+    const secs = Math.floor(seconds % 60)
+    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`
   }
   
   return (
@@ -99,17 +107,32 @@ export default function LandingPage() {
                   `}
                   style={{ willChange: 'transform' }}
                 >
-                  <div
-                    className="relative aspect-[4/3] w-full max-w-[600px] rounded-xl overflow-hidden shadow-2xl"
-                    onMouseEnter={() => videoURL && setShowPlayOverlay(true)}
-                    onMouseLeave={() => videoURL && !videoRef.current?.paused && setShowPlayOverlay(false)}
-                    onClick={() => {
-                      if (videoURL && videoRef.current) {
-                        videoRef.current.play()
-                        setShowPlayOverlay(false)
-                      }
-                    }}
-                  >
+                  <div className="relative aspect-[4/3] w-full max-w-[600px] rounded-xl overflow-hidden shadow-2xl"
+                      onMouseEnter={() => {
+                        if (videoURL) {
+                          setIsHovered(true)
+                          setShowPlayOverlay(true)
+                        }
+                      }}
+                      onMouseLeave={() => {
+                        if (videoURL && !videoRef.current?.paused) {
+                          setIsHovered(false)
+                          setShowPlayOverlay(false)
+                        }
+                      }}
+                      onClick={() => {
+                        if (videoURL && videoRef.current) {
+                          if (videoRef.current.paused) {
+                            videoRef.current.play()
+                            setShowPlayOverlay(false)
+                          } else {
+                            videoRef.current.pause()
+                            setShowPlayOverlay(true)
+                          }
+                        }
+                      }}
+                    >
+
                     {/* Background image only if no video */}
                     {!videoURL && (
                       <Image
@@ -122,27 +145,80 @@ export default function LandingPage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent z-20" />
 
                       {/* Uploaded video */}
-                        {videoURL && (
-                          <video
-                            ref={videoRef}
-                            src={videoURL}
-                            className="absolute inset-0 w-full h-full object-contain z-10 bg-black"
-                            playsInline
-                            onPlay={() => setShowPlayOverlay(false)}
-                            onPause={() => setShowPlayOverlay(true)}
-                            style={{
-                              transform: "rotate(0deg) scale(1)", // iOS sometimes rotates video incorrectly; this is a fallback
-                            }}
-                            controls={false}
-                          />
-                        )}
-
+                      {videoURL && (
+                      <div className="relative w-full h-full">
+                        <video
+                          ref={videoRef}
+                          src={videoURL}
+                          className="absolute inset-0 w-full h-full object-contain z-10 bg-black"
+                          playsInline
+                          muted={muted}
+                          onPlay={() => setShowPlayOverlay(false)}
+                          onPause={() => setShowPlayOverlay(true)}
+                          onTimeUpdate={() => {
+                            const current = videoRef.current?.currentTime || 0
+                            const duration = videoRef.current?.duration || 0
+                            const timeDisplay = `${formatTime(current)} / ${formatTime(duration)}`
+                            const label = document.getElementById('video-timestamp')
+                            if (label) label.textContent = timeDisplay
+                          }}
+                        />
+                        {/* Optional timestamp overlay */}
+                        <div
+                          id="video-timestamp"
+                          className="absolute top-2 right-3 text-xs text-white bg-black/60 px-2 py-1 rounded z-30"
+                        >
+                          0:00 / 0:00
+                        </div>
+                      </div>
+                    )}
                         {/* Play overlay */}
-                        {videoURL && showPlayOverlay && (
-                          <div className="absolute inset-0 z-20 flex items-center justify-center cursor-pointer bg-black/30">
-                            <Play className="w-12 h-12 text-white opacity-80 hover:opacity-100 transition" />
-                          </div>
-                        )}
+                        {videoURL && isHovered && (
+  <div className="absolute bottom-2 left-2 right-2 z-30 flex justify-between items-center px-3 py-2 bg-black/50 rounded">
+    {/* Timestamp */}
+    <div id="video-timestamp" className="text-xs text-white">
+      0:00 / 0:00
+    </div>
+
+    {/* Controls */}
+    <div className="flex gap-3 items-center">
+      {/* Mute/Unmute */}
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={(e) => {
+          e.stopPropagation()
+          if (videoRef.current) {
+            const newMuted = !muted
+            videoRef.current.muted = newMuted
+            setMuted(newMuted)
+          }
+        }}
+      >
+        {muted ? (
+          <VolumeX className="w-5 h-5 text-white" />
+        ) : (
+          <Volume2 className="w-5 h-5 text-white" />
+        )}
+      </Button>
+
+      {/* Fullscreen */}
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={(e) => {
+          e.stopPropagation()
+          if (videoRef.current?.requestFullscreen) {
+            videoRef.current.requestFullscreen()
+          }
+        }}
+      >
+        <Expand className="w-2 h-2 text-white" />
+      </Button>
+    </div>
+  </div>
+)}
+
 
                         {/* Gradient + status panel only if no video */}
                         {!videoURL && (
