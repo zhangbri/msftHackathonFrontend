@@ -85,21 +85,32 @@ export default function LandingPage() {
                 </div>
               </div>
               <div className="flex items-center justify-center">
-                <div className="relative">
+                <div className="relative aspect-[4/3] w-full max-w-[600px] rounded-xl overflow-hidden shadow-2xl">
+                  {/* Background image always visible */}
                   <Image
                     alt="Workout Analysis Dashboard"
-                    className="aspect-[4/3] overflow-hidden rounded-xl object-cover shadow-2xl"
-                    height="400"
-                    src="/placeholder.svg?height=400&width=600"
-                    width="600"
+                    src="/favicon/apple-touch-icon.png"
+                    fill
+                    className="object-contain bg-black/10 rounded-xl"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-xl" />
-                  <div className="absolute bottom-4 left-4 right-4">
+                  {/* Uploaded video (if any), layered on top */}
+                  {videoURL && (
+                    <video
+                      src={videoURL}
+                      controls
+                      className="absolute inset-0 w-full h-full object-contain z-10 bg-black/30"
+                    />
+                  )}
+                  {/* Gradient overlay, always on top */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent z-20" />
+
+                  {/* Bottom status panel */}
+                  <div className="absolute bottom-4 left-4 right-4 z-30">
                     <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3">
                       <div className="flex items-center gap-2 text-sm">
                         <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                        <span className="font-medium">Analyzing form...</span>
-                        <span className="text-gray-600">92% accuracy</span>
+                        <span className="font-medium">{videoURL ? "Preview loaded" : "Analyzing form..."}</span>
+                        <span className="text-gray-600">{videoURL ? "User-uploaded video" : "92% accuracy"}</span>
                       </div>
                     </div>
                   </div>
