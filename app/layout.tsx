@@ -22,11 +22,11 @@ export const metadata: Metadata = {
   },
   robots: 'index, follow',
   icons: {
-    icon: '/favicons/favicon.ico',
-    shortcut: '/favicons/apple-touch-icon.png',
-    apple: '/favicons/apple-touch-icon.png',
+    icon: '/favicon/favicon.ico',
+    shortcut: '/favicon/apple-touch-icon.png',
+    apple: '/favicon/apple-touch-icon.png',
   },
-  manifest: '/favicons/site.webmanifest',
+  manifest: '/favicon/site.webmanifest',
 };
 
 export default function RootLayout({
