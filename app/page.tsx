@@ -9,6 +9,8 @@ import Link from "next/link"
 export default function LandingPage() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [videoURL, setVideoURL] = useState<string | null>(null)
+  const [showPlayOverlay, setShowPlayOverlay] = useState(true)
+  const videoRef = useRef<HTMLVideoElement | null>(null)
 
   const handleVideoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -53,14 +55,6 @@ export default function LandingPage() {
                     <Upload className="mr-2 h-4 w-4" />
                     Upload Your First Video
                   </Button>
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="bg-white text-gray-900 border-gray-300 hover:bg-gray-50"
-                  >
-                    <Play className="mr-2 h-4 w-4" />
-                    Watch Demo
-                  </Button>
                 </div>
                 <input
                   type="file"
@@ -85,36 +79,66 @@ export default function LandingPage() {
                 </div>
               </div>
               <div className="flex items-center justify-center">
-                <div className="relative aspect-[4/3] w-full max-w-[600px] rounded-xl overflow-hidden shadow-2xl">
-                  {/* Background image always visible */}
-                  <Image
-                    alt="Workout Analysis Dashboard"
-                    src="/favicon/apple-touch-icon.png"
-                    fill
-                    className="object-contain bg-black/10 rounded-xl"
-                  />
-                  {/* Uploaded video (if any), layered on top */}
-                  {videoURL && (
-                    <video
-                      src={videoURL}
-                      controls
-                      className="absolute inset-0 w-full h-full object-contain z-10 bg-black/30"
-                    />
-                  )}
-                  {/* Gradient overlay, always on top */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent z-20" />
+              <div
+  className="relative aspect-[4/3] w-full max-w-[600px] rounded-xl overflow-hidden shadow-2xl"
+  onMouseEnter={() => videoURL && setShowPlayOverlay(true)}
+  onMouseLeave={() => videoURL && !videoRef.current?.paused && setShowPlayOverlay(false)}
+  onClick={() => {
+    if (videoURL && videoRef.current) {
+      videoRef.current.play()
+      setShowPlayOverlay(false)
+    }
+  }}
+>
+  {/* Background image only if no video */}
+  {!videoURL && (
+    <Image
+      alt="Workout Analysis Dashboard"
+      src="/favicon/apple-touch-icon.png"
+      fill
+      className="object-contain bg-black/10 rounded-xl"
+    />
+  )}
 
-                  {/* Bottom status panel */}
-                  <div className="absolute bottom-4 left-4 right-4 z-30">
-                    <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3">
-                      <div className="flex items-center gap-2 text-sm">
-                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                        <span className="font-medium">{videoURL ? "Preview loaded" : "Analyzing form..."}</span>
-                        <span className="text-gray-600">{videoURL ? "User-uploaded video" : "92% accuracy"}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+  {/* Uploaded video */}
+  {videoURL && (
+    <video
+      ref={videoRef}
+      src={videoURL}
+      className="absolute inset-0 w-full h-full object-contain z-10 bg-black"
+      playsInline
+      onPlay={() => setShowPlayOverlay(false)}
+      onPause={() => setShowPlayOverlay(true)}
+      style={{
+        transform: "rotate(0deg) scale(1)", // iOS sometimes rotates video incorrectly; this is a fallback
+      }}
+      controls={false}
+    />
+  )}
+
+  {/* Play overlay */}
+  {videoURL && showPlayOverlay && (
+    <div className="absolute inset-0 z-20 flex items-center justify-center cursor-pointer bg-black/30">
+      <Play className="w-12 h-12 text-white opacity-80 hover:opacity-100 transition" />
+    </div>
+  )}
+
+  {/* Gradient + status panel only if no video */}
+  {!videoURL && (
+    <>
+      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent z-20" />
+      <div className="absolute bottom-4 left-4 right-4 z-30">
+        <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3">
+          <div className="flex items-center gap-2 text-sm">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+            <span className="font-medium">Analyzing form...</span>
+            <span className="text-gray-600">92% accuracy</span>
+          </div>
+        </div>
+      </div>
+    </>
+  )}
+</div>
               </div>
             </div>
           </div>
