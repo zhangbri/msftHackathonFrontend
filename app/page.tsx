@@ -38,6 +38,19 @@ export default function LandingPage() {
     return `${minutes}:${secs < 10 ? '0' : ''}${secs}`
   }
   
+  const handleReset = () => {
+    setVideoURL(null)
+    setSlideImage(false)
+    setExpanded(false)
+    setShowPlayOverlay(true)
+    setIsPaused(true)
+    setMuted(true)
+    if (videoRef.current) {
+      videoRef.current.pause()
+      videoRef.current.currentTime = 0
+    }
+  }
+  
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-orange-50 to-red-50">
       {/* Header */}
@@ -72,11 +85,14 @@ export default function LandingPage() {
                   <div className="flex flex-col gap-2 min-[400px]:flex-row">
                     <Button size="lg" className="bg-orange-600 hover:bg-orange-700" onClick={() => fileInputRef.current?.click()}>
                       <Upload className="mr-2 h-4 w-4" />
-                      Upload Your First Video
+                      Upload
                     </Button>
                     {/* Test Expand Button */}
                     <Button variant="secondary" size="lg" onClick={handleTestExpand}>
                       Test Expand
+                    </Button>
+                    <Button variant="outline" size="lg" onClick={handleReset}>
+                      Reset
                     </Button>
                   </div>
                   <input
