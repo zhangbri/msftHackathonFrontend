@@ -23,10 +23,12 @@ export default function LandingPage() {
       const url = URL.createObjectURL(file)
       setVideoURL(url)
       console.log("Uploaded video:", file)
+      
+      // Clear the input so the same file can be uploaded again
+      event.target.value = ""
     }
   }
-
-
+  
   // Simulate promise resolution for testing
   const handleTestExpand = () => {
     setExpanded(true)
