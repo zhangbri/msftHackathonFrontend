@@ -16,18 +16,12 @@ export default function LandingPage() {
   const [isHovered, setIsHovered] = useState(false)
   const [isPaused, setIsPaused] = useState(true)
   const [showTempBox, setShowTempBox] = useState(false) // <-- Adde
-  const [rotateVideo, setRotateVideo] = useState(false)
 
   const handleVideoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (file) {
       const url = URL.createObjectURL(file)
       setVideoURL(url)
-
-      // Detect if the file is a .mov (case-insensitive)
-      const isMov = file.name.toLowerCase().endsWith('.mov')
-      setRotateVideo(isMov)
-
       console.log("Uploaded video:", file)
     }
   }
@@ -107,7 +101,7 @@ export default function LandingPage() {
                   </div>
                   <input
                     type="file"
-                    accept="video/*"
+                    accept="video/mp4"
                     ref={fileInputRef}
                     onChange={handleVideoUpload}
                     style={{ display: "none" }}
@@ -158,7 +152,7 @@ export default function LandingPage() {
                         <video
                           ref={videoRef}
                           src={videoURL}
-                          className={`absolute inset-0 w-full h-full object-contain z-10 bg-black ${rotateVideo ? "rotate-180" : ""}`}
+                          className="absolute inset-0 w-full h-full object-contain z-10 bg-black"
                           playsInline
                           muted={muted}
                           autoPlay
