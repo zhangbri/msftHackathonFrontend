@@ -86,20 +86,6 @@ export default function LandingPage() {
                     onChange={handleVideoUpload}
                     style={{ display: "none" }}
                   />
-                  <div className="flex items-center gap-4 text-sm text-gray-600">
-                    <div className="flex items-center gap-1">
-                      <CheckCircle className="h-4 w-4 text-green-600" />
-                      Free trial
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <CheckCircle className="h-4 w-4 text-green-600" />
-                      No equipment needed
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <CheckCircle className="h-4 w-4 text-green-600" />
-                      Instant feedback
-                    </div>
-                  </div>
                 </div>
                 {/* Image panel: slides left after text fades out */}
                 <div
