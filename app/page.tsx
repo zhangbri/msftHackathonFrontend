@@ -16,7 +16,8 @@ export default function LandingPage() {
   const [muted, setMuted] = useState(true)
   const [isHovered, setIsHovered] = useState(false)
   const [isPaused, setIsPaused] = useState(true)
-  
+  const [showTempBox, setShowTempBox] = useState(false) // <-- Added
+
   const handleVideoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (file) {
@@ -29,15 +30,12 @@ export default function LandingPage() {
   // Simulate promise resolution for testing
   const handleTestExpand = () => {
     setExpanded(true)
-    setTimeout(() => setSlideImage(true), 1000) // Wait for fade-out before sliding image (1s)
+    setTimeout(() => {
+      setSlideImage(true)
+      setTimeout(() => setShowTempBox(true), 1000) // Show box after slide (1s)
+    }, 1000) // Wait for fade-out before sliding image (1s)
   }
-  
-  const formatTime = (seconds: number): string => {
-    const minutes = Math.floor(seconds / 60)
-    const secs = Math.floor(seconds % 60)
-    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`
-  }
-  
+
   const handleReset = () => {
     setVideoURL(null)
     setSlideImage(false)
@@ -45,12 +43,19 @@ export default function LandingPage() {
     setShowPlayOverlay(true)
     setIsPaused(true)
     setMuted(true)
+    setShowTempBox(false) // <-- Reset temp box on reset
     if (videoRef.current) {
       videoRef.current.pause()
       videoRef.current.currentTime = 0
     }
   }
-  
+
+  const formatTime = (seconds: number): string => {
+    const minutes = Math.floor(seconds / 60)
+    const secs = Math.floor(seconds % 60)
+    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`
+  }
+
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-orange-50 to-red-50">
       {/* Header */}
@@ -112,14 +117,10 @@ export default function LandingPage() {
                 >
                   <div className="relative aspect-[4/3] w-full max-w-[600px] rounded-xl overflow-hidden shadow-2xl"
                       onMouseEnter={() => {
-                        if (videoURL) {
-                          setIsHovered(true)
-                        }
+                        if (videoURL) setIsHovered(true)
                       }}
                       onMouseLeave={() => {
-                        if (videoURL && !videoRef.current?.paused) {
-                          setIsHovered(false)
-                        }
+                        if (videoURL && !videoRef.current?.paused) setIsHovered(false)
                       }}
                       onClick={(e) => {
                         e.stopPropagation()
@@ -238,11 +239,39 @@ export default function LandingPage() {
                             </div>
                           </>
                         )}
-                    </div>
+                  </div>
+                </div>
+                {/* Go Back button below the image, only when slid over */}
+                {slideImage && (
+                  <div className="absolute left-[calc(50%_-_300px)] bottom-[-70px] w-[600px] flex justify-center">
+                    <button
+                      className={`w-full py-3 bg-orange-600 text-white rounded-lg font-semibold shadow hover:bg-orange-700 transition-opacity duration-[2000ms] ${slideImage ? "opacity-100" : "opacity-0"}`}
+                      onClick={handleReset}
+                      style={{ transitionDelay: "900ms" }} // Optional: slight delay for a smoother effect
+                    >
+                      Go Back
+                    </button>
+                  </div>
+                )}
+                {/* Temp box: slides in from the top to the right of the image panel */}
+                <div
+                  className={`
+                    relative flex items-center transition-all duration-700 w-[600px] min-w-[600px] max-w-[600px]
+                    ${showTempBox ? "translate-y-0 opacity-100" : "-translate-y-32 opacity-0"}
+                  `}
+                  style={{
+                    pointerEvents: showTempBox ? "auto" : "none",
+                    marginLeft: "-560px", // Negative margin pulls the box left, closer to the image box
+                    zIndex: 10,
+                  }}
+                >
+                  <div className="w-full h-[400px] bg-white rounded-xl shadow-2xl flex items-center justify-center text-xl font-bold">
+                    temp text
                   </div>
                 </div>
               </div>
             </div>
+          </div>
         </section>
       </main>
 
