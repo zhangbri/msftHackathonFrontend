@@ -15,15 +15,23 @@ export default function LandingPage() {
   const [muted, setMuted] = useState(true)
   const [isHovered, setIsHovered] = useState(false)
   const [isPaused, setIsPaused] = useState(true)
-  
+  const [rotateVideo, setRotateVideo] = useState(false)
+
+
   const handleVideoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (file) {
       const url = URL.createObjectURL(file)
       setVideoURL(url)
+
+      // Detect if the file is a .mov (case-insensitive)
+      const isMov = file.name.toLowerCase().endsWith('.mov')
+      setRotateVideo(isMov)
+
       console.log("Uploaded video:", file)
     }
   }
+
 
   // Simulate promise resolution for testing
   const handleTestExpand = () => {
@@ -150,7 +158,7 @@ export default function LandingPage() {
                         <video
                           ref={videoRef}
                           src={videoURL}
-                          className="absolute inset-0 w-full h-full object-contain z-10 bg-black"
+                          className={`absolute inset-0 w-full h-full object-contain z-10 bg-black ${rotateVideo ? "rotate-180" : ""}`}
                           playsInline
                           muted={muted}
                           autoPlay
