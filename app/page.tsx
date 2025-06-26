@@ -2,7 +2,7 @@
 import { useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Camera, Upload, CheckCircle, Play, Zap, Volume2, VolumeX, Expand, Pause } from "lucide-react"
+import { Camera, Upload, Zap, Volume2, VolumeX, Expand} from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -11,7 +11,6 @@ export default function LandingPage() {
   const [videoURL, setVideoURL] = useState<string | null>(null)
   const [expanded, setExpanded] = useState(false)
   const [slideImage, setSlideImage] = useState(false)
-  const [showPlayOverlay, setShowPlayOverlay] = useState(true)
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const [muted, setMuted] = useState(true)
   const [isHovered, setIsHovered] = useState(false)
@@ -42,7 +41,6 @@ export default function LandingPage() {
     setVideoURL(null)
     setSlideImage(false)
     setExpanded(false)
-    setShowPlayOverlay(true)
     setIsPaused(true)
     setMuted(true)
     if (videoRef.current) {
@@ -127,11 +125,9 @@ export default function LandingPage() {
                           if (isPaused) {
                             videoRef.current.play()
                             setIsPaused(false)
-                            setShowPlayOverlay(false)
                           } else {
                             videoRef.current.pause()
                             setIsPaused(true)
-                            setShowPlayOverlay(true)
                           }
                         }
                       }}                      
@@ -160,11 +156,9 @@ export default function LandingPage() {
                           autoPlay
                           loop
                           onPlay={() => {
-                            setShowPlayOverlay(false)
                             setIsPaused(false)
                           }}
                           onPause={() => {
-                            setShowPlayOverlay(true)
                             setIsPaused(true)
                           }}
                           onTimeUpdate={() => {
