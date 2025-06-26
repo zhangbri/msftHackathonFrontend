@@ -16,6 +16,8 @@ export default function LandingPage() {
   const [isHovered, setIsHovered] = useState(false)
   const [isPaused, setIsPaused] = useState(true)
   const [showTempBox, setShowTempBox] = useState(false) // <-- Adde
+  const expandTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  const tempBoxTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const handleVideoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -32,24 +34,32 @@ export default function LandingPage() {
   // Simulate promise resolution for testing
   const handleTestExpand = () => {
     setExpanded(true)
-    setTimeout(() => {
+    expandTimeoutRef.current = setTimeout(() => {
       setSlideImage(true)
-      setTimeout(() => setShowTempBox(true), 1000) // Show box after slide (1s)
-    }, 1000) // Wait for fade-out before sliding image (1s)
-  }
+      tempBoxTimeoutRef.current = setTimeout(() => {
+        setShowTempBox(true)
+      }, 1000)
+    }, 1000)
+  }  
 
   const handleReset = () => {
+    // Cancel any pending animations
+    if (expandTimeoutRef.current) clearTimeout(expandTimeoutRef.current)
+    if (tempBoxTimeoutRef.current) clearTimeout(tempBoxTimeoutRef.current)
+  
     setVideoURL(null)
     setSlideImage(false)
     setExpanded(false)
     setIsPaused(true)
     setMuted(true)
-    setShowTempBox(false) // <-- Reset temp box on reset
+    setShowTempBox(false)
+    
     if (videoRef.current) {
       videoRef.current.pause()
       videoRef.current.currentTime = 0
     }
   }
+  
 
   const formatTime = (seconds: number): string => {
     const minutes = Math.floor(seconds / 60)
@@ -221,21 +231,6 @@ export default function LandingPage() {
                         </div>
                       </>
                     )}
-                        {/* Gradient + status panel only if no video */}
-                        {!videoURL && (
-                          <>
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent z-20" />
-                            <div className="absolute bottom-4 left-4 right-4 z-30">
-                              <div className="bg-white/90 backdrop-blur-sm rounded-lg p-3">
-                                <div className="flex items-center gap-2 text-sm">
-                                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                                  <span className="font-medium">Analyzing form...</span>
-                                  <span className="text-gray-600">92% accuracy</span>
-                                </div>
-                              </div>
-                            </div>
-                          </>
-                        )}
                   </div>
                 </div>
                 {/* Go Back button below the image, only when slid over */}
