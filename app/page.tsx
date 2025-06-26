@@ -155,6 +155,7 @@ export default function LandingPage() {
                           className="absolute inset-0 w-full h-full object-contain z-10 bg-black"
                           playsInline
                           muted={muted}
+                          autoPlay
                           loop
                           onPlay={() => {
                             setShowPlayOverlay(false)
@@ -181,48 +182,45 @@ export default function LandingPage() {
                         </div>
                       </div>
                     )}
-{videoURL && isHovered && (
-  <>
-    {/* Bottom Right Controls: Mute & Fullscreen */}
-    <div className="absolute bottom-2 right-2 z-30 flex gap-2 items-center bg-black/50 px-2 py-1 rounded">
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={(e) => {
-          e.stopPropagation()
-          if (videoRef.current) {
-            const newMuted = !muted
-            videoRef.current.muted = newMuted
-            setMuted(newMuted)
-          }
-        }}
-      >
-        {muted ? (
-          <VolumeX className="w-5 h-5 text-white" />
-        ) : (
-          <Volume2 className="w-5 h-5 text-white" />
-        )}
-      </Button>
+                    {videoURL && isHovered && (
+                      <>
+                        {/* Bottom Right Controls: Mute & Fullscreen */}
+                        <div className="absolute bottom-2 right-2 z-30 flex gap-2 items-center bg-black/50 px-2 py-1 rounded">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              if (videoRef.current) {
+                                const newMuted = !muted
+                                videoRef.current.muted = newMuted
+                                setMuted(newMuted)
+                              }
+                            }}
+                          >
+                            {muted ? (
+                              <VolumeX className="w-5 h-5 text-white" />
+                            ) : (
+                              <Volume2 className="w-5 h-5 text-white" />
+                            )}
+                          </Button>
 
-      {/* Fullscreen */}
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={(e) => {
-          e.stopPropagation()
-          if (videoRef.current?.requestFullscreen) {
-            videoRef.current.requestFullscreen()
-          }
-        }}
-      >
-        <Expand className="w-4 h-4 text-white" />
-      </Button>
-    </div>
-  </>
-)}
-
-
-
+                          {/* Fullscreen */}
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              if (videoRef.current?.requestFullscreen) {
+                                videoRef.current.requestFullscreen()
+                              }
+                            }}
+                          >
+                            <Expand className="w-4 h-4 text-white" />
+                          </Button>
+                        </div>
+                      </>
+                    )}
                         {/* Gradient + status panel only if no video */}
                         {!videoURL && (
                           <>
