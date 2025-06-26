@@ -15,7 +15,8 @@ export default function LandingPage() {
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const [muted, setMuted] = useState(true)
   const [isHovered, setIsHovered] = useState(false)
-
+  const [isPaused, setIsPaused] = useState(true)
+  
   const handleVideoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (file) {
@@ -111,26 +112,27 @@ export default function LandingPage() {
                       onMouseEnter={() => {
                         if (videoURL) {
                           setIsHovered(true)
-                          setShowPlayOverlay(true)
                         }
                       }}
                       onMouseLeave={() => {
                         if (videoURL && !videoRef.current?.paused) {
                           setIsHovered(false)
-                          setShowPlayOverlay(false)
                         }
                       }}
-                      onClick={() => {
-                        if (videoURL && videoRef.current) {
-                          if (videoRef.current.paused) {
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        if (videoRef.current) {
+                          if (isPaused) {
                             videoRef.current.play()
+                            setIsPaused(false)
                             setShowPlayOverlay(false)
                           } else {
                             videoRef.current.pause()
+                            setIsPaused(true)
                             setShowPlayOverlay(true)
                           }
                         }
-                      }}
+                      }}                      
                     >
 
                     {/* Background image only if no video */}
@@ -153,8 +155,15 @@ export default function LandingPage() {
                           className="absolute inset-0 w-full h-full object-contain z-10 bg-black"
                           playsInline
                           muted={muted}
-                          onPlay={() => setShowPlayOverlay(false)}
-                          onPause={() => setShowPlayOverlay(true)}
+                          loop
+                          onPlay={() => {
+                            setShowPlayOverlay(false)
+                            setIsPaused(false)
+                          }}
+                          onPause={() => {
+                            setShowPlayOverlay(true)
+                            setIsPaused(true)
+                          }}
                           onTimeUpdate={() => {
                             const current = videoRef.current?.currentTime || 0
                             const duration = videoRef.current?.duration || 0
@@ -174,33 +183,6 @@ export default function LandingPage() {
                     )}
 {videoURL && isHovered && (
   <>
-    {/* Centered Play/Pause Button */}
-    <div className="absolute inset-0 z-30 flex justify-center items-center">
-      <Button
-        variant="ghost"
-        size="icon"
-        className="bg-black/50 backdrop-blur-sm rounded-full p-3 hover:bg-black/70 transition"
-        onClick={(e) => {
-          e.stopPropagation()
-          if (videoRef.current) {
-            if (videoRef.current.paused) {
-              videoRef.current.play()
-              setShowPlayOverlay(false)
-            } else {
-              videoRef.current.pause()
-              setShowPlayOverlay(true)
-            }
-          }
-        }}
-      >
-        {videoRef.current?.paused || showPlayOverlay ? (
-          <Play className="w-10 h-10 text-white" />
-        ) : (
-          <Pause className="w-10 h-10 text-white" />
-        )}
-      </Button>
-    </div>
-
     {/* Bottom Right Controls: Mute & Fullscreen */}
     <div className="absolute bottom-2 right-2 z-30 flex gap-2 items-center bg-black/50 px-2 py-1 rounded">
       <Button
