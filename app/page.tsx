@@ -2,7 +2,7 @@
 import { useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Camera, Upload, CheckCircle, Play, Zap, Volume2, VolumeX, Expand, Pause } from "lucide-react"
+import { Camera, Upload, Zap, Volume2, VolumeX, Expand} from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -11,21 +11,27 @@ export default function LandingPage() {
   const [videoURL, setVideoURL] = useState<string | null>(null)
   const [expanded, setExpanded] = useState(false)
   const [slideImage, setSlideImage] = useState(false)
-  const [showPlayOverlay, setShowPlayOverlay] = useState(true)
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const [muted, setMuted] = useState(true)
   const [isHovered, setIsHovered] = useState(false)
   const [isPaused, setIsPaused] = useState(true)
-  const [showTempBox, setShowTempBox] = useState(false) // <-- Added
+  const [showTempBox, setShowTempBox] = useState(false) // <-- Adde
+  const [rotateVideo, setRotateVideo] = useState(false)
 
   const handleVideoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (file) {
       const url = URL.createObjectURL(file)
       setVideoURL(url)
+
+      // Detect if the file is a .mov (case-insensitive)
+      const isMov = file.name.toLowerCase().endsWith('.mov')
+      setRotateVideo(isMov)
+
       console.log("Uploaded video:", file)
     }
   }
+
 
   // Simulate promise resolution for testing
   const handleTestExpand = () => {
@@ -40,7 +46,6 @@ export default function LandingPage() {
     setVideoURL(null)
     setSlideImage(false)
     setExpanded(false)
-    setShowPlayOverlay(true)
     setIsPaused(true)
     setMuted(true)
     setShowTempBox(false) // <-- Reset temp box on reset
@@ -128,11 +133,9 @@ export default function LandingPage() {
                           if (isPaused) {
                             videoRef.current.play()
                             setIsPaused(false)
-                            setShowPlayOverlay(false)
                           } else {
                             videoRef.current.pause()
                             setIsPaused(true)
-                            setShowPlayOverlay(true)
                           }
                         }
                       }}                      
@@ -155,17 +158,15 @@ export default function LandingPage() {
                         <video
                           ref={videoRef}
                           src={videoURL}
-                          className="absolute inset-0 w-full h-full object-contain z-10 bg-black"
+                          className={`absolute inset-0 w-full h-full object-contain z-10 bg-black ${rotateVideo ? "rotate-180" : ""}`}
                           playsInline
                           muted={muted}
                           autoPlay
                           loop
                           onPlay={() => {
-                            setShowPlayOverlay(false)
                             setIsPaused(false)
                           }}
                           onPause={() => {
-                            setShowPlayOverlay(true)
                             setIsPaused(true)
                           }}
                           onTimeUpdate={() => {
