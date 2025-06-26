@@ -2,7 +2,7 @@
 import { useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Camera, Upload, CheckCircle, Play, Zap, Volume2, VolumeX, Expand } from "lucide-react"
+import { Camera, Upload, CheckCircle, Play, Zap, Volume2, VolumeX, Expand, Pause } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
@@ -172,17 +172,37 @@ export default function LandingPage() {
                         </div>
                       </div>
                     )}
-                        {/* Play overlay */}
-                        {videoURL && isHovered && (
-  <div className="absolute bottom-2 left-2 right-2 z-30 flex justify-between items-center px-3 py-2 bg-black/50 rounded">
-    {/* Timestamp */}
-    <div id="video-timestamp" className="text-xs text-white">
-      0:00 / 0:00
+{videoURL && isHovered && (
+  <>
+    {/* Centered Play/Pause Button */}
+    <div className="absolute inset-0 z-30 flex justify-center items-center">
+      <Button
+        variant="ghost"
+        size="icon"
+        className="bg-black/50 backdrop-blur-sm rounded-full p-3 hover:bg-black/70 transition"
+        onClick={(e) => {
+          e.stopPropagation()
+          if (videoRef.current) {
+            if (videoRef.current.paused) {
+              videoRef.current.play()
+              setShowPlayOverlay(false)
+            } else {
+              videoRef.current.pause()
+              setShowPlayOverlay(true)
+            }
+          }
+        }}
+      >
+        {videoRef.current?.paused || showPlayOverlay ? (
+          <Play className="w-10 h-10 text-white" />
+        ) : (
+          <Pause className="w-10 h-10 text-white" />
+        )}
+      </Button>
     </div>
 
-    {/* Controls */}
-    <div className="flex gap-3 items-center">
-      {/* Mute/Unmute */}
+    {/* Bottom Right Controls: Mute & Fullscreen */}
+    <div className="absolute bottom-2 right-2 z-30 flex gap-2 items-center bg-black/50 px-2 py-1 rounded">
       <Button
         variant="ghost"
         size="icon"
@@ -213,11 +233,12 @@ export default function LandingPage() {
           }
         }}
       >
-        <Expand className="w-2 h-2 text-white" />
+        <Expand className="w-4 h-4 text-white" />
       </Button>
     </div>
-  </div>
+  </>
 )}
+
 
 
                         {/* Gradient + status panel only if no video */}
