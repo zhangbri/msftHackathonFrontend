@@ -1,8 +1,7 @@
 "use client"
 import { useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Camera, Upload, Zap, Volume2, VolumeX, Expand} from "lucide-react"
+import { Upload, Volume2, VolumeX, Expand} from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
