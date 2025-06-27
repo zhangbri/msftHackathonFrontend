@@ -72,7 +72,6 @@ export default function LandingPage() {
     // Cancel any pending animations
     if (expandTimeoutRef.current) clearTimeout(expandTimeoutRef.current)
     if (tempBoxTimeoutRef.current) clearTimeout(tempBoxTimeoutRef.current)
-
     setVideoURL(null)
     setSlideImage(false)
     setExpanded(false)
@@ -90,7 +89,7 @@ export default function LandingPage() {
   const formatTime = (seconds: number): string => {
     const minutes = Math.floor(seconds / 60)
     const secs = Math.floor(seconds % 60)
-    return `${minutes}:${secs < 10 ? "0" : ""}${secs}`
+    return `${minutes}:${secs < 10 ? '0' : ''}${secs}`
   }
 
   return (
@@ -98,8 +97,14 @@ export default function LandingPage() {
       {/* Header */}
       <header className="px-4 lg:px-6 -mb-28 h-16 flex items-center border-b">
         <Link className="flex items-center justify-center" href="/">
-          <Image src="/favicon/favicon.ico" alt="FormSight logo" width={32} height={32} className="rounded-sm" />
-          <span className="ml-2 text-xl font-bold">FormSight</span>
+        <Image
+          src="/favicon/favicon.ico"
+          alt="FormSight logo"
+          width={32}
+          height={32}
+          className="rounded-sm"
+        />
+        <span className="ml-2 text-xl font-bold">FormSight</span>
         </Link>
       </header>
 
@@ -123,6 +128,7 @@ export default function LandingPage() {
                 <div
                   className={`flex flex-col justify-center space-y-4 transition-opacity duration-1000 w-[600px] min-w-[600px] max-w-[600px] ${expanded ? "opacity-0 pointer-events-none" : "opacity-100"}`}
                 >
+                <div className={`flex flex-col justify-center space-y-4 transition-opacity duration-1000 w-[600px] min-w-[600px] max-w-[600px] ${expanded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
                   <div className="space-y-2">
                     <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
                       Perfect Your Workout Form with <span className="text-orange-600">AI Vision</span>
