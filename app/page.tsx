@@ -72,8 +72,14 @@ export default function LandingPage() {
       {/* Header */}
       <header className="px-4 lg:px-6 -mb-28 h-16 flex items-center border-b">
         <Link className="flex items-center justify-center" href="/">
-          <Camera className="h-8 w-8 text-orange-600" />
-          <span className="ml-2 text-xl font-bold">FormSight</span>
+        <Image
+          src="/favicon/favicon.ico"
+          alt="FormSight logo"
+          width={32}
+          height={32}
+          className="rounded-sm"
+        />
+        <span className="ml-2 text-xl font-bold">FormSight</span>
         </Link>
       </header>
 
@@ -86,10 +92,6 @@ export default function LandingPage() {
                 {/* Text column: fades out, then is removed after slide */}
                 <div className={`flex flex-col justify-center space-y-4 transition-opacity duration-1000 w-[600px] min-w-[600px] max-w-[600px] ${expanded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
                   <div className="space-y-2">
-                    <Badge className="w-fit bg-orange-100 text-orange-800 hover:bg-orange-200">
-                      <Zap className="w-3 h-3 mr-1" />
-                      AI-Powered Form Analysis
-                    </Badge>
                     <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
                       Perfect Your Workout Form with <span className="text-orange-600">AI Vision</span>
                     </h1>
@@ -153,7 +155,7 @@ export default function LandingPage() {
                         alt="Workout Analysis Dashboard"
                         src="/favicon/apple-touch-icon.png"
                         fill
-                        className="object-contain bg-black/10 rounded-xl"
+                        className="object-cover"
                       />
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent z-20" />
