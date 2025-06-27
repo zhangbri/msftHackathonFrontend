@@ -72,8 +72,14 @@ export default function LandingPage() {
       {/* Header */}
       <header className="px-4 lg:px-6 -mb-28 h-16 flex items-center border-b">
         <Link className="flex items-center justify-center" href="/">
-          <Camera className="h-8 w-8 text-orange-600" />
-          <span className="ml-2 text-xl font-bold">FormSight</span>
+        <Image
+          src="/favicon/favicon.ico"
+          alt="FormSight logo"
+          width={32}
+          height={32}
+          className="rounded-sm"
+        />
+        <span className="ml-2 text-xl font-bold">FormSight</span>
         </Link>
       </header>
 
