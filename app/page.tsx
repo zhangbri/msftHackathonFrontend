@@ -154,7 +154,7 @@ export default function LandingPage() {
                         alt="Workout Analysis Dashboard"
                         src="/favicon/apple-touch-icon.png"
                         fill
-                        className="object-cover"
+                        className="object-cover bg-black/10 rounded-xl"
                       />
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent z-20" />
